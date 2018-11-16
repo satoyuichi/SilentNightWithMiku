@@ -1,9 +1,7 @@
 // g++ -Wall -D__MACOSX_CORE__ -o midiprobe midi_test.cpp RtMidi.cpp -framework CoreMIDI -framework CoreAudio -framework CoreFoundation
 // midiout.cpp
-#include <iostream>
-#include <cstdlib>
-#include "RtMidi.h"
 #include <unistd.h>
+#include "RtMidi.h"
 #define SLEEP( milliseconds ) usleep( (unsigned long) (milliseconds * 1000.0) )
 
 // Packets
@@ -23,8 +21,13 @@
 
 #define MIDI_RESET 0x0A, 0x07, 0x00, 0x00
 
+// Packet Length
+#define SIZE_SYSEX_BEGIN 5
+#define SIZE_LYRICS_HEADER (SIZE_SYSEX_BEGIN + 2)
+#define SIZE_SYSEX_END 1
+
 // Pitch
-#define PITCH_R (0xffff)
+#define PITCH_R (0xffff)	// 休符
 #define PITCH_C (PITCH_D - 1024)
 #define PITCH_D (PITCH_E - 1024)
 #define PITCH_E (PITCH_F - 512)
@@ -39,16 +42,11 @@
 #define PITCH_FO (PITCH_EO + 512)
 
 // Note time
-#define NOTE_8 (300)
-#define NOTE_4 (NOTE_8 << 1)
-#define NOTE_4P (NOTE_4 + (NOTE_4 >> 1))
-#define NOTE_2 (NOTE_4 << 1)
-#define NOTE_2P (NOTE_2 + (NOTE_2 >> 1))
-
-// Packet Length
-#define SIZE_SYSEX_BEGIN 5
-#define SIZE_LYRICS_HEADER (SIZE_SYSEX_BEGIN + 2)
-#define SIZE_SYSEX_END 1
+#define NOTE_8 (300)		// 八分音符
+#define NOTE_4 (NOTE_8 << 1)	// 四分音符
+#define NOTE_4P (NOTE_4 + (NOTE_4 >> 1)) // 符点四分音符
+#define NOTE_2 (NOTE_4 << 1)		 // 二分音符
+#define NOTE_2P (NOTE_2 + (NOTE_2 >> 1)) // 符点二分音符
 
 #define SEND_PITCH_COMMAND(pitch) { pitch_bend_cmd [8] = ((pitch & 0xff80) >> 7); \
 				   pitch_bend_cmd [9] = (pitch & 0x007f); \
@@ -81,26 +79,29 @@ unsigned char gokan_on_cmd[] = {
 unsigned char gokan_off_cmd[] = {
      NSX1_GOKAN_OFF_MIDI_RESET
 };
-unsigned char note_on_cmd[] = { DIRECT_COMMAND_HEADER,
-				MOJI_SET_KASHI,
-				NOTE_ON,
-				SYSEX_END
+unsigned char note_on_cmd[] = {
+     DIRECT_COMMAND_HEADER,
+     MOJI_SET_KASHI,
+     NOTE_ON,
+     SYSEX_END
 };
-unsigned char revoice_and_next_cmd[] = { DIRECT_COMMAND_HEADER,
-					 MOJI_SET_KASHI,
-					 REVOICE,
-					 KASHI_POS_INC,
-					 SYSEX_END
+unsigned char revoice_and_next_cmd[] = {
+     DIRECT_COMMAND_HEADER,
+     MOJI_SET_KASHI,
+     REVOICE,
+     KASHI_POS_INC,
+     SYSEX_END
 };
-unsigned char revoice_cmd[] = { DIRECT_COMMAND_HEADER,
-				MOJI_SET_KASHI,
-				REVOICE,
-				SYSEX_END
+unsigned char revoice_cmd[] = {
+     DIRECT_COMMAND_HEADER,
+     MOJI_SET_KASHI,
+     REVOICE,
+     SYSEX_END
 };
-unsigned char note_off_cmd[] = { DIRECT_COMMAND_HEADER,
-				 NOTE_OFF,
-//				 MIDI_RESET,
-				 SYSEX_END
+unsigned char note_off_cmd[] = {
+     DIRECT_COMMAND_HEADER,
+     NOTE_OFF,
+     SYSEX_END
 };
   
 unsigned char lyrics[] = {
@@ -110,7 +111,7 @@ unsigned char lyrics[] = {
      0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,	     // ほしはひかり
      0x17, 0x07, 0x01, 0x01, 0x43, 0x65, 0x01, 0x09, 0x77, // すくいのみこは
      0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
-     0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04, // ねむりたもう
+     0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04,	     // ねむりたもう
      0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
      SYSEX_END
 };
@@ -133,7 +134,6 @@ int main(int argc, char** argv)
 
   midiout->sendMessage( note_on_cmd, sizeof( note_on_cmd ) );
   for (int i = 0; i < sizeof (notes) / sizeof (notes[0]) - 1; i++ ) {
-//  for (int i = 0; i < 33; i++ ) {
        if (notes[i].pitch != PITCH_R) {
 	    SEND_PITCH_COMMAND(notes[i].pitch);
        }
