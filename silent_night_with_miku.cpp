@@ -35,9 +35,11 @@
 #define PITCH_B (PITCH_A + 1024)
 #define PITCH_CO (PITCH_B + 512)
 #define PITCH_DO (PITCH_CO + 1024)
+#define PITCH_EO (PITCH_DO + 1024)
+#define PITCH_FO (PITCH_EO + 512)
 
 // Note time
-#define NOTE_8 (800 >> 1)
+#define NOTE_8 (300)
 #define NOTE_4 (NOTE_8 << 1)
 #define NOTE_4P (NOTE_4 + (NOTE_4 >> 1))
 #define NOTE_2 (NOTE_4 << 1)
@@ -62,9 +64,9 @@ S_NOTE notes[] = {
      {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2P}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
      {PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_B, NOTE_2P}, {PITCH_CO, NOTE_2}, {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_2}, {PITCH_R, NOTE_4},
      {PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-     {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_R, NOTE_4},
-     {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_R, NOTE_4},
-     {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_8}, {PITCH_R, NOTE_4},
+     {PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+     {PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_FO, NOTE_4P}, {PITCH_DO, NOTE_8}, {PITCH_B, NOTE_4}, {PITCH_CO, NOTE_2P}, {PITCH_EO, NOTE_2}, {PITCH_R, NOTE_4},
+     {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_R, NOTE_4},
 };
 
 // Commands
@@ -107,9 +109,9 @@ unsigned char lyrics[] = {
      0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
      0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,	     // ほしはひかり
      0x17, 0x07, 0x01, 0x01, 0x43, 0x65, 0x01, 0x09, 0x77, // すくいのみこは
-     0x64, 0x4E, 0x42, 0x43, 0x3F, 0x05, 0x40, // まぶねのなかに
-     0x42, 0x66, 0x70, 0x29, 0x68, 0x02,       // ねむりたもう
-     0x01, 0x2D, 0x6C, 0x17, 0x07,	       // いとやすく
+     0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
+     0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04, // ねむりたもう
+     0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
      SYSEX_END
 };
 
@@ -130,10 +132,13 @@ int main(int argc, char** argv)
   midiout->sendMessage( lyrics, sizeof( lyrics ) );
 
   midiout->sendMessage( note_on_cmd, sizeof( note_on_cmd ) );
-//  for (int i = 0; i < sizeof (notes) / sizeof (notes[0]); i++ ) {
-  for (int i = 0; i < 33; i++ ) {
+  for (int i = 0; i < sizeof (notes) / sizeof (notes[0]) - 1; i++ ) {
+//  for (int i = 0; i < 33; i++ ) {
        if (notes[i].pitch != PITCH_R) {
 	    SEND_PITCH_COMMAND(notes[i].pitch);
+       }
+       else {
+	    midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
        }
        SLEEP(notes[i].time);
 
@@ -144,7 +149,7 @@ int main(int argc, char** argv)
 	    midiout->sendMessage( revoice_and_next_cmd, sizeof( revoice_and_next_cmd ) );
        }
   }
-  SLEEP(500);
+  SLEEP(NOTE_2P);
 
   midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
   midiout->sendMessage( gokan_off_cmd, sizeof( gokan_off_cmd ) );
