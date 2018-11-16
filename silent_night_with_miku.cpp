@@ -1,5 +1,4 @@
 // g++ -Wall -D__MACOSX_CORE__ -o midiprobe midi_test.cpp RtMidi.cpp -framework CoreMIDI -framework CoreAudio -framework CoreFoundation
-// midiout.cpp
 #include <unistd.h>
 #include "RtMidi.h"
 #define SLEEP( milliseconds ) usleep( (unsigned long) (milliseconds * 1000.0) )
