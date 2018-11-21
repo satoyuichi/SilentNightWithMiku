@@ -41,15 +41,15 @@
 #define PITCH_FO (PITCH_EO + 512)
 
 // Note time
-#define NOTE_8 (300)		// 八分音符
-#define NOTE_4 (NOTE_8 << 1)	// 四分音符
+#define NOTE_8 (300)			 // 八分音符
+#define NOTE_4 (NOTE_8 << 1)		 // 四分音符
 #define NOTE_4P (NOTE_4 + (NOTE_4 >> 1)) // 符点四分音符
 #define NOTE_2 (NOTE_4 << 1)		 // 二分音符
 #define NOTE_2P (NOTE_2 + (NOTE_2 >> 1)) // 符点二分音符
 
 #define SEND_PITCH_COMMAND(pitch) { pitch_bend_cmd [8] = ((pitch & 0xff80) >> 7); \
-				   pitch_bend_cmd [9] = (pitch & 0x007f); \
-				   midiout->sendMessage( pitch_bend_cmd, sizeof (pitch_bend_cmd) ); }
+	  pitch_bend_cmd [9] = (pitch & 0x007f); \
+	  midiout->sendMessage( pitch_bend_cmd, sizeof (pitch_bend_cmd) ); }
 
 typedef struct {
      unsigned int pitch;
@@ -108,7 +108,7 @@ unsigned char lyrics[] = {
      0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,	     // わわわわわわわ
      0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
      0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,	     // ほしはひかり
-     0x17, 0x07, 0x01, 0x01, 0x43, 0x65, 0x01, 0x09, 0x77, // すくいのみこは
+     0x46, 0x3C, 0x42, 0x03, 0x43, 0x65, 0x01, 0x07, 0x77, // はつねのミクは
      0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
      0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04,	     // ねむりたもう
      0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
@@ -125,6 +125,7 @@ int main(int argc, char** argv)
     std::cout << "No ports available!\n";
     goto cleanup;
   }
+
   // Open first available port.
   midiout->openPort( 0 );
 
