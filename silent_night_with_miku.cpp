@@ -1,7 +1,9 @@
-// g++ -Wall -D__MACOSX_CORE__ -o midiprobe midi_test.cpp RtMidi.cpp -framework CoreMIDI -framework CoreAudio -framework CoreFoundation
+// g++ -Wall -D__MACOSX_CORE__ -o silent_night_with_miku silent_night_with_miku.cpp RtMidi.cpp -framework CoreMIDI -framework CoreAudio -framework CoreFoundation
 #include <unistd.h>
 #include "RtMidi.h"
 #define SLEEP( milliseconds ) usleep( (unsigned long) (milliseconds * 1000.0) )
+
+// #define INFINIT_LOOP
 
 // Packets
 #define NSX1_GOKAN_ON 0xF0, 0x43, 0x79, 0x09, 0x11, 0x0D, 0x0A, 0x06, 0x01, 0x00, 0xF7
@@ -48,114 +50,120 @@
 #define NOTE_2P (NOTE_2 + (NOTE_2 >> 1)) // 符点二分音符
 
 #define SEND_PITCH_COMMAND(pitch) { pitch_bend_cmd [8] = ((pitch & 0xff80) >> 7); \
-	  pitch_bend_cmd [9] = (pitch & 0x007f); \
-	  midiout->sendMessage( pitch_bend_cmd, sizeof (pitch_bend_cmd) ); }
+		pitch_bend_cmd [9] = (pitch & 0x007f);							\
+		midiout->sendMessage( pitch_bend_cmd, sizeof (pitch_bend_cmd) ); }
 
 typedef struct {
-     unsigned int pitch;
-     int time;
+	unsigned int pitch;
+	int time;
 } S_NOTE;
 
 S_NOTE notes[] = {
-     {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_C, NOTE_2P},
-     {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2P}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-     {PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_B, NOTE_2P}, {PITCH_CO, NOTE_2}, {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_2}, {PITCH_R, NOTE_4},
-     {PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-     {PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-     {PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_FO, NOTE_4P}, {PITCH_DO, NOTE_8}, {PITCH_B, NOTE_4}, {PITCH_CO, NOTE_2P}, {PITCH_EO, NOTE_2}, {PITCH_R, NOTE_4},
-     {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_R, NOTE_4},
+	{PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_C, NOTE_2P},
+	{PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2P}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_B, NOTE_2P}, {PITCH_CO, NOTE_2}, {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_FO, NOTE_4P}, {PITCH_DO, NOTE_8}, {PITCH_B, NOTE_4}, {PITCH_CO, NOTE_2P}, {PITCH_EO, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_R, NOTE_4},
 };
 
 // Commands
 unsigned char pitch_bend_cmd[] = {
-     DIRECT_COMMAND_HEADER,
-     PITCH_BEND,
-     SYSEX_END
+	DIRECT_COMMAND_HEADER,
+	PITCH_BEND,
+	SYSEX_END
 };
 unsigned char gokan_on_cmd[] = {
-     NSX1_GOKAN_ON
+	NSX1_GOKAN_ON
 };
 unsigned char gokan_off_cmd[] = {
-     NSX1_GOKAN_OFF_MIDI_RESET
+	NSX1_GOKAN_OFF_MIDI_RESET
 };
 unsigned char note_on_cmd[] = {
-     DIRECT_COMMAND_HEADER,
-     MOJI_SET_KASHI,
-     NOTE_ON,
-     SYSEX_END
+	DIRECT_COMMAND_HEADER,
+	MOJI_SET_KASHI,
+	NOTE_ON,
+	SYSEX_END
 };
 unsigned char revoice_and_next_cmd[] = {
-     DIRECT_COMMAND_HEADER,
-     MOJI_SET_KASHI,
-     REVOICE,
-     KASHI_POS_INC,
-     SYSEX_END
+	DIRECT_COMMAND_HEADER,
+	MOJI_SET_KASHI,
+	REVOICE,
+	KASHI_POS_INC,
+	SYSEX_END
 };
 unsigned char revoice_cmd[] = {
-     DIRECT_COMMAND_HEADER,
-     MOJI_SET_KASHI,
-     REVOICE,
-     SYSEX_END
+	DIRECT_COMMAND_HEADER,
+	MOJI_SET_KASHI,
+	REVOICE,
+	SYSEX_END
 };
 unsigned char note_off_cmd[] = {
-     DIRECT_COMMAND_HEADER,
-     NOTE_OFF,
-     SYSEX_END
+	DIRECT_COMMAND_HEADER,
+	NOTE_OFF,
+	SYSEX_END
 };
   
 unsigned char lyrics[] = {
-     SYSEX_BEGIN, 0x0A, 0x01,
-     0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,	     // わわわわわわわ
-     0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
-     0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,	     // ほしはひかり
-     0x46, 0x3C, 0x42, 0x03, 0x43, 0x65, 0x01, 0x07, 0x77, // はつねのミクは
-     0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
-     0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04,	     // ねむりたもう
-     0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
-     SYSEX_END
+	SYSEX_BEGIN, 0x0A, 0x01,
+	0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,		// わわわわわわわ
+	0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
+	0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,				// ほしはひかり
+	0x46, 0x3C, 0x42, 0x03, 0x43, 0x65, 0x01, 0x07, 0x77, // はつねのミクは
+	0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
+	0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04,		// ねむりたもう
+	0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
+	SYSEX_END
 };
 
 int main(int argc, char** argv)
 {
-  RtMidiOut *midiout = new RtMidiOut();
+	RtMidiOut *midiout = new RtMidiOut();
 
-  // Check available ports.
-  unsigned int nPorts = midiout->getPortCount();
-  if ( nPorts == 0 ) {
-    std::cout << "No ports available!\n";
-    goto cleanup;
-  }
+	// Check available ports.
+	unsigned int nPorts = midiout->getPortCount();
+	if ( nPorts == 0 ) {
+		std::cout << "No ports available!\n";
+		goto cleanup;
+	}
 
-  // Open first available port.
-  midiout->openPort( 0 );
+	// Open first available port.
+	midiout->openPort( 0 );
 
-  midiout->sendMessage( gokan_on_cmd, sizeof( gokan_on_cmd ) );
-  midiout->sendMessage( lyrics, sizeof( lyrics ) );
+	midiout->sendMessage( gokan_on_cmd, sizeof( gokan_on_cmd ) );
+	midiout->sendMessage( lyrics, sizeof( lyrics ) );
 
-  midiout->sendMessage( note_on_cmd, sizeof( note_on_cmd ) );
-  for (int i = 0; i < sizeof (notes) / sizeof (notes[0]) - 1; i++ ) {
-       if (notes[i].pitch != PITCH_R) {
-	    SEND_PITCH_COMMAND(notes[i].pitch);
-       }
-       else {
-	    midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
-       }
-       SLEEP(notes[i].time);
+#ifdef INFINIT_LOOP
+	while (1) {
+#endif  // INFINIT_LOOP
+		midiout->sendMessage( note_on_cmd, sizeof( note_on_cmd ) );
+		for (int i = 0; i < sizeof (notes) / sizeof (notes[0]) - 1; i++ ) {
+			if (notes[i].pitch != PITCH_R) {
+				SEND_PITCH_COMMAND(notes[i].pitch);
+			}
+			else {
+				midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
+			}
+			SLEEP(notes[i].time);
 
-       fprintf (stderr, "pitch: 0x%x, time: %d, pitch: 0x%02x, 0x%02x\n", notes[i].pitch, notes[i].time,
-		pitch_bend_cmd[8], pitch_bend_cmd[9]);
+			fprintf (stderr, "pitch: 0x%x, time: %d, pitch: 0x%02x, 0x%02x\n", notes[i].pitch, notes[i].time,
+					 pitch_bend_cmd[8], pitch_bend_cmd[9]);
 
-       if (notes[i].pitch != PITCH_R) {
-	    midiout->sendMessage( revoice_and_next_cmd, sizeof( revoice_and_next_cmd ) );
-       }
-  }
-  SLEEP(NOTE_2P);
+			if (notes[i].pitch != PITCH_R) {
+				midiout->sendMessage( revoice_and_next_cmd, sizeof( revoice_and_next_cmd ) );
+			}
+		}
+		SLEEP(NOTE_2P);
+#ifdef INFINIT_LOOP
+	}
+#endif  // INFINIT_LOOP
 
-  midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
-  midiout->sendMessage( gokan_off_cmd, sizeof( gokan_off_cmd ) );
+	midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
+	midiout->sendMessage( gokan_off_cmd, sizeof( gokan_off_cmd ) );
 
-// Clean up
-cleanup:
-  delete midiout;
-  return 0;
+	// Clean up
+ cleanup:
+	delete midiout;
+	return 0;
 }
