@@ -60,39 +60,39 @@ typedef struct {
 } S_NOTE;
 
 S_NOTE notes_holynight[] = {
-  {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_C, NOTE_2P},
-  {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2P}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-  {PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_B, NOTE_2P}, {PITCH_CO, NOTE_2}, {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_2}, {PITCH_R, NOTE_4},
-  {PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-  {PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
-  {PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_FO, NOTE_4P}, {PITCH_DO, NOTE_8}, {PITCH_B, NOTE_4}, {PITCH_CO, NOTE_2P}, {PITCH_EO, NOTE_2}, {PITCH_R, NOTE_4},
-  {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_R, NOTE_4},
+	{PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_C, NOTE_2P},
+	{PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2P}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_B, NOTE_2P}, {PITCH_CO, NOTE_2}, {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_A, NOTE_2}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4P}, {PITCH_B, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_FO, NOTE_4P}, {PITCH_DO, NOTE_8}, {PITCH_B, NOTE_4}, {PITCH_CO, NOTE_2P}, {PITCH_EO, NOTE_2}, {PITCH_R, NOTE_4},
+	{PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_R, NOTE_4},
 };
 
 S_NOTE notes_farewell [] = {
-  {PITCH_C, NOTE_4},
-  {PITCH_F, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_4}, {PITCH_A, NOTE_4},
-  {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
-  {PITCH_F, NOTE_4}, {PITCH_F, NOTE_4}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4},
-  {PITCH_DO, NOTE_2P}, {PITCH_R, NOTE_4},
+	{PITCH_C, NOTE_4},
+	{PITCH_F, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_F, NOTE_4}, {PITCH_F, NOTE_4}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4},
+	{PITCH_DO, NOTE_2P}, {PITCH_R, NOTE_4},
 
-  {PITCH_DO, NOTE_4},
-  {PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
-  {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
-  {PITCH_F, NOTE_4P}, {PITCH_D, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_4},
-  {PITCH_F, NOTE_2P}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_F, NOTE_4P}, {PITCH_D, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_4},
+	{PITCH_F, NOTE_2P}, {PITCH_R, NOTE_4},
 
-  {PITCH_DO, NOTE_4},
-  {PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
-  {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_DO, NOTE_4},
-  {PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4},
-  {PITCH_DO, NOTE_2P}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4},
+	{PITCH_DO, NOTE_2P}, {PITCH_R, NOTE_4},
 
-  {PITCH_DO, NOTE_4},
-  {PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
-  {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
-  {PITCH_F, NOTE_4P}, {PITCH_D, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_4},
-  {PITCH_F, NOTE_2P}, {PITCH_R, NOTE_4},
+	{PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_F, NOTE_4P}, {PITCH_D, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_4},
+	{PITCH_F, NOTE_2P}, {PITCH_R, NOTE_4},
 };
 
 // Commands
@@ -145,24 +145,24 @@ unsigned char note_off_cmd[] = {
 };
 
 unsigned char lyrics_holynight[] = {
-  SYSEX_BEGIN, 0x0A, 0x00,
-  0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,		// わわわわわわわ
-  0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
-  0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,				// ほしはひかり
-  0x46, 0x3C, 0x42, 0x03, 0x43, 0x65, 0x01, 0x07, 0x77, // はつねのミクは
-  0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
-  0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04,		// ねむりたもう
-  0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
-  SYSEX_END
+	SYSEX_BEGIN, 0x0A, 0x00,
+	0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,		// わわわわわわわ
+	0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
+	0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,				// ほしはひかり
+	0x46, 0x3C, 0x42, 0x03, 0x43, 0x65, 0x01, 0x07, 0x77, // はつねのミクは
+	0x63, 0x4E, 0x42, 0x03, 0x43, 0x3F, 0x00, 0x05, 0x40, // まぶねのなかに
+	0x42, 0x66, 0x70, 0x01, 0x29, 0x68, 0x04,		// ねむりたもう
+	0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
+	SYSEX_END
 };
 
 unsigned char lyrics_farewell[] = {
-  SYSEX_BEGIN, 0x0A, 0x00,
-  0x4b, 0x29, 0x71, 0x43, 0x48, 0x05, 0x00, 0x70, 0x64, 0x32, 0x43, 0x6d, 0x02, 0x06, // ほたるのひかあり、まどのゆうき、
-  0x49, 0x65, 0x6e, 0x66, 0x3c, 0x06, 0x01, 0x48, 0x05, 0x15, 0x42, 0x3c, 0x02, 0x3c, // ふみよむつきいひ、かさねつうつ、
-  0x01, 0x3c, 0x20, 0x05, 0x2d, 0x20, 0x01, 0x68, 0x17, 0x0b, 0x01, 0x43, 0x2d, 0x7a, // いつしかとしいも、すぎいのとを、
-  0x00, 0x08, 0x2c, 0x1e, 0x08, 0x15, 0x00, 0x77, 0x77, 0x05, 0x72, 0x6d, 0x02, 0x07, // あけてぞけさあは、わかれゆうく。
-  SYSEX_END
+	SYSEX_BEGIN, 0x0A, 0x00,
+	0x4b, 0x29, 0x71, 0x43, 0x48, 0x05, 0x00, 0x70, 0x64, 0x32, 0x43, 0x6d, 0x02, 0x06, // ほたるのひかあり、まどのゆうき、
+	0x49, 0x65, 0x6e, 0x66, 0x3c, 0x06, 0x01, 0x48, 0x05, 0x15, 0x42, 0x3c, 0x02, 0x3c, // ふみよむつきいひ、かさねつうつ、
+	0x01, 0x3c, 0x20, 0x05, 0x2d, 0x20, 0x01, 0x68, 0x17, 0x0b, 0x01, 0x43, 0x2d, 0x7a, // いつしかとしいも、すぎいのとを、
+	0x00, 0x08, 0x2c, 0x1e, 0x08, 0x15, 0x00, 0x77, 0x77, 0x05, 0x72, 0x6d, 0x02, 0x07, // あけてぞけさあは、わかれゆうく。
+	SYSEX_END
 };
 
 
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
 #ifdef INFINIT_LOOP
 	while (1) {
 #endif  // INFINIT_LOOP
-	  midiout->sendMessage( note_on_and_next_cmd, sizeof( revoice_and_next_cmd ) );
+		midiout->sendMessage( note_on_and_next_cmd, sizeof( revoice_and_next_cmd ) );
 		for (int i = 0, l = 7; i < sizeof (notes_farewell) / sizeof (notes_farewell[0]); i++ ) {
 			if (notes_farewell[i].pitch != PITCH_R) {
 				SEND_PITCH_COMMAND(notes_farewell[i].pitch);
@@ -196,12 +196,12 @@ int main(int argc, char** argv)
 			}
 			SLEEP(notes_farewell[i].time);
 
-			fprintf (stderr, "[%2d] lyrics: 0x%02x, pitch: 0x%x, time: %d, pitch: 0x%02x, 0x%02x\n", i, lyrics_farewell[l], notes_farewell[i].pitch, notes_farewell[i].time,
-					 pitch_bend_cmd[8], pitch_bend_cmd[9]);
+			fprintf (stderr, "[%2d] lyrics: 0x%02x, pitch: 0x%x, time: %d, pitch: 0x%02x, 0x%02x\n",
+					 i, lyrics_farewell[l], notes_farewell[i].pitch, notes_farewell[i].time, pitch_bend_cmd[8], pitch_bend_cmd[9]);
 
 			if (notes_farewell[i].pitch != PITCH_R) {
-			  midiout->sendMessage( revoice_and_next_cmd, sizeof( revoice_and_next_cmd ) );
-			  l++;
+				midiout->sendMessage( revoice_and_next_cmd, sizeof( revoice_and_next_cmd ) );
+				l++;
 			}
 		}
 		SLEEP(NOTE_2P);
