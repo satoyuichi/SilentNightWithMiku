@@ -21,6 +21,7 @@
 #define PITCH_BEND 0x08, 0x09, 0x00, 0x00
 
 #define MIDI_RESET 0x0A, 0x07, 0x00, 0x00
+#define ROM_RESET 0x0A, 0x07, 0x01, 0x01
 
 // Packet Length
 #define SIZE_SYSEX_BEGIN 5
@@ -33,7 +34,7 @@
 #define PITCH_D (PITCH_E - 1024)
 #define PITCH_E (PITCH_F - 512)
 #define PITCH_F (PITCH_FS - 512)
-#define PITCH_FS (8191)
+#define PITCH_FS (8191 - 1024 * 4)
 #define PITCH_G (PITCH_FS + 512)
 #define PITCH_A (PITCH_G + 1024)
 #define PITCH_B (PITCH_A + 1024)
@@ -43,7 +44,7 @@
 #define PITCH_FO (PITCH_EO + 512)
 
 // Note time
-#define NOTE_8 (300)			 // 八分音符
+#define NOTE_8 (300 * 1)			 // 八分音符
 #define NOTE_4 (NOTE_8 << 1)		 // 四分音符
 #define NOTE_4P (NOTE_4 + (NOTE_4 >> 1)) // 符点四分音符
 #define NOTE_2 (NOTE_4 << 1)		 // 二分音符
@@ -58,7 +59,7 @@ typedef struct {
 	int time;
 } S_NOTE;
 
-S_NOTE notes[] = {
+S_NOTE notes_holynight[] = {
 	{PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_C, NOTE_2P},
 	{PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2P}, {PITCH_G, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_2}, {PITCH_R, NOTE_4},
 	{PITCH_DO, NOTE_2}, {PITCH_DO, NOTE_4}, {PITCH_B, NOTE_2P}, {PITCH_CO, NOTE_2}, {PITCH_CO, NOTE_4}, {PITCH_G, NOTE_2}, {PITCH_R, NOTE_4},
@@ -68,10 +69,41 @@ S_NOTE notes[] = {
 	{PITCH_CO, NOTE_4}, {PITCH_G, NOTE_4}, {PITCH_E, NOTE_4}, {PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_2P}, {PITCH_R, NOTE_4},
 };
 
+S_NOTE notes_farewell [] = {
+	{PITCH_C, NOTE_4},
+	{PITCH_F, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_F, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_F, NOTE_4}, {PITCH_F, NOTE_4}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4},
+	{PITCH_DO, NOTE_2P}, {PITCH_R, NOTE_4},
+
+	{PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_F, NOTE_4P}, {PITCH_D, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_4},
+	{PITCH_F, NOTE_2P}, {PITCH_R, NOTE_4},
+
+	{PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_CO, NOTE_4},
+	{PITCH_DO, NOTE_2P}, {PITCH_R, NOTE_4},
+
+	{PITCH_DO, NOTE_4},
+	{PITCH_CO, NOTE_4P}, {PITCH_A, NOTE_8}, {PITCH_A, NOTE_4}, {PITCH_F, NOTE_4},
+	{PITCH_G, NOTE_4P}, {PITCH_F, NOTE_8}, {PITCH_G, NOTE_4}, {PITCH_A, NOTE_4},
+	{PITCH_F, NOTE_4P}, {PITCH_D, NOTE_8}, {PITCH_D, NOTE_4}, {PITCH_C, NOTE_4},
+	{PITCH_F, NOTE_2P}, {PITCH_R, NOTE_4},
+};
+
 // Commands
 unsigned char pitch_bend_cmd[] = {
 	DIRECT_COMMAND_HEADER,
 	PITCH_BEND,
+	SYSEX_END
+};
+unsigned char rom_reset_cmd[] = {
+	DIRECT_COMMAND_HEADER,
+	ROM_RESET,
 	SYSEX_END
 };
 unsigned char gokan_on_cmd[] = {
@@ -84,6 +116,13 @@ unsigned char note_on_cmd[] = {
 	DIRECT_COMMAND_HEADER,
 	MOJI_SET_KASHI,
 	NOTE_ON,
+	SYSEX_END
+};
+unsigned char note_on_and_next_cmd[] = {
+	DIRECT_COMMAND_HEADER,
+	MOJI_SET_KASHI,
+	NOTE_ON,
+	KASHI_POS_INC,
 	SYSEX_END
 };
 unsigned char revoice_and_next_cmd[] = {
@@ -104,9 +143,9 @@ unsigned char note_off_cmd[] = {
 	NOTE_OFF,
 	SYSEX_END
 };
-  
-unsigned char lyrics[] = {
-	SYSEX_BEGIN, 0x0A, 0x01,
+
+unsigned char lyrics_holynight[] = {
+	SYSEX_BEGIN, 0x0A, 0x00,
 	0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77,		// わわわわわわわ
 	0x06, 0x01, 0x6e, 0x20, 0x09, 0x43, 0x6e, 0x71, // きよしこのよる
 	0x4b, 0x20, 0x77, 0x48, 0x05, 0x70,				// ほしはひかり
@@ -116,6 +155,16 @@ unsigned char lyrics[] = {
 	0x01, 0x01, 0x2D, 0x6C, 0x00, 0x17, 0x07, 0x02, // いとやすく
 	SYSEX_END
 };
+
+unsigned char lyrics_farewell[] = {
+	SYSEX_BEGIN, 0x0A, 0x00,
+	0x4b, 0x29, 0x71, 0x43, 0x48, 0x05, 0x00, 0x70, 0x64, 0x32, 0x43, 0x6d, 0x02, 0x06, // ほたるのひかあり、まどのゆうき、
+	0x49, 0x65, 0x6e, 0x66, 0x3c, 0x06, 0x01, 0x48, 0x05, 0x15, 0x42, 0x3c, 0x02, 0x3c, // ふみよむつきいひ、かさねつうつ、
+	0x01, 0x3c, 0x20, 0x05, 0x2d, 0x20, 0x01, 0x68, 0x17, 0x0b, 0x01, 0x43, 0x2d, 0x7a, // いつしかとしいも、すぎいのとを、
+	0x00, 0x08, 0x2c, 0x1e, 0x08, 0x15, 0x00, 0x77, 0x77, 0x05, 0x72, 0x6d, 0x02, 0x07, // あけてぞけさあは、わかれゆうく。
+	SYSEX_END
+};
+
 
 int main(int argc, char** argv)
 {
@@ -132,26 +181,27 @@ int main(int argc, char** argv)
 	midiout->openPort( 0 );
 
 	midiout->sendMessage( gokan_on_cmd, sizeof( gokan_on_cmd ) );
-	midiout->sendMessage( lyrics, sizeof( lyrics ) );
+	midiout->sendMessage( lyrics_farewell, sizeof( lyrics_farewell) );
 
 #ifdef INFINIT_LOOP
 	while (1) {
 #endif  // INFINIT_LOOP
-		midiout->sendMessage( note_on_cmd, sizeof( note_on_cmd ) );
-		for (int i = 0; i < sizeof (notes) / sizeof (notes[0]) - 1; i++ ) {
-			if (notes[i].pitch != PITCH_R) {
-				SEND_PITCH_COMMAND(notes[i].pitch);
+		midiout->sendMessage( note_on_and_next_cmd, sizeof( revoice_and_next_cmd ) );
+		for (int i = 0, l = 7; i < sizeof (notes_farewell) / sizeof (notes_farewell[0]); i++ ) {
+			if (notes_farewell[i].pitch != PITCH_R) {
+				SEND_PITCH_COMMAND(notes_farewell[i].pitch);
 			}
 			else {
 				midiout->sendMessage( note_off_cmd, sizeof( note_off_cmd ) );
 			}
-			SLEEP(notes[i].time);
+			SLEEP(notes_farewell[i].time);
 
-			fprintf (stderr, "pitch: 0x%x, time: %d, pitch: 0x%02x, 0x%02x\n", notes[i].pitch, notes[i].time,
-					 pitch_bend_cmd[8], pitch_bend_cmd[9]);
+			fprintf (stderr, "[%2d] lyrics: 0x%02x, pitch: 0x%x, time: %d, pitch: 0x%02x, 0x%02x\n",
+					 i, lyrics_farewell[l], notes_farewell[i].pitch, notes_farewell[i].time, pitch_bend_cmd[8], pitch_bend_cmd[9]);
 
-			if (notes[i].pitch != PITCH_R) {
+			if (notes_farewell[i].pitch != PITCH_R) {
 				midiout->sendMessage( revoice_and_next_cmd, sizeof( revoice_and_next_cmd ) );
+				l++;
 			}
 		}
 		SLEEP(NOTE_2P);
